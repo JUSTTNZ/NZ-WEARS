@@ -154,7 +154,7 @@
 
     .cartitems-promobox button {
         width: 120px;
-        margin-left: 125px;
+        margin-left: -125px;
     }
 }
 
@@ -167,5 +167,20 @@
 
     .cartitems-format {
         display: grid;
+    }
+
+    .cartitems-promobox {
+        width: auto;
+        max-width: 500px;
+    }
+
+    .cartitems-promobox input {
+        width: 100%;
+    }
+
+    .cartitems-promobox button {
+        width: 120px;
+        margin-left: 125px;
+        margin-bottom: 50px;
     }
 }
