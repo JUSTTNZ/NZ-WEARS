@@ -31,3 +31,18 @@
     padding-bottom: 70px;
 }
 
+@media(max-width:1280px) {
+    .description-box {
+        margin: 60px;
+    }
+}
+
+@media(max-width:800px) {
+    .description-box {
+        margin: 60px 20px;
+    }
+
+    .description-box-description {
+        font-size: 14px;
+    }
+}
