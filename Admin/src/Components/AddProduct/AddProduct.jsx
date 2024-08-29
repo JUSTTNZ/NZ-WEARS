@@ -3,11 +3,11 @@ import './AddProduct.css'
 import upload_area from '../../Admin_Assets/upload_area.svg'
 const AddProduct = () => {
 
-  const [image,setImage] = useState(null);
+  const [image,setImage] = useState(false);
   const [productDetails,setProductDetails] = useState({
     name: "",
     image: "",
-    category: "women",
+    category: "select",
     new_price: "",
     old_price: ""
   })
@@ -22,11 +22,11 @@ const AddProduct = () => {
   }
 
   const Add_Product = async () => {
-    console.log(productDetails);
+    // console.log(productDetails);
     let responseData;
     let product = {...productDetails};
 
-    let formData =  new formData();
+    let formData =  new FormData();
     formData.append('product', image);
 
     await fetch('http://localhost:4000/upload', {
@@ -43,6 +43,16 @@ const AddProduct = () => {
     {
        product.image = responseData.image_url;
        console.log(product);
+       await fetch('http://localhost:4000/addproduct',{
+           method:'POST',
+           headers:{
+              Accept:'application/json',
+              'Content-Type':'application/json',
+           },
+           body:JSON.stringify(product),
+       }).then((resp)=>resp.json()).then((data)=>{
+          data.success?alert("Product Added"):alert("Failed")
+       })
     } 
   
   }
@@ -65,6 +75,7 @@ const AddProduct = () => {
       <div className="addproduct-itemfield">
           <p>Product Category</p>
           <select value={productDetails.category} onChange={changeHandler} name="category" className='add-product-selector'>
+            <option value="select">Select</option>
             <option value="women">Women</option>
             <option value="men">Men</option>
             <option value="kid">Kid</option>
