@@ -30,7 +30,7 @@ const Navbar = () => {
       </ul>
       <div className="nav-login-cart">
         {localStorage.getItem('auth-token')
-        ?<button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace('/login')}}>Logout</button>:
+        ?<button onClick={()=>{localStorage.removeItem('auth-token');window.location.replace('/')}}>Logout</button>:
         <Link to='/login'><button className="button">Login</button></Link>}
         
         <Link to='/cart'><img src={cart_icon} alt="" /></Link>

@@ -204,6 +204,22 @@ app.post('/login',async (req,res)=> {
     res.json({success:false, errors:"Wrong Email id"})
    }
 })
+
+// creating API for new collections data
+app.get('/newcollection',async (req,res)=>{
+    let products = await Product.find({});
+    let newcollection = products.slice(1).slice(-8);
+    console.log("New collection Fetched");
+    res.send(newcollection);
+})
+
+// creating API endpoint for popular in women section
+app.get('/popularinwomen', async(req,res)=>{
+    let products = await Product.find({category:"women"});
+    let popular_in_women = products.slice(0,4);
+    console.log("popular in women fetched")
+    res.send(popular_in_women);
+})
 app.listen(port, (error)=>{
     if (!error) {
         console.log('server Running on port '+port)
