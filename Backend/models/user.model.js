@@ -24,6 +24,7 @@ const userSchema = Schema({
 
 // 
 userSchema.methods.isPasswordValid = async function (userPassword) {
+    userPassword = String(userPassword);
     return await bcrypt.compare(userPassword, this.password);
 }
 
@@ -36,7 +37,9 @@ userSchema.pre("save", async function () {
 
 userSchema.methods.generateToken = function () {
     const { _id, email } = this;
-    console.log(this)
+    //the generated token should become invalid after 7 days.
+    const token = jwt.sign({ id: _id, email }, process.env.JWT_SECRET, { expiresIn: "7d" });
+    return token;
 }
 
-module.exports = model("Users", userSchema);
+module.exports = model("User", userSchema);

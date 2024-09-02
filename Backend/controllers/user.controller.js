@@ -1,8 +1,8 @@
 const User = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 
-class Auth {
-    async signup(req, res) {
+class AuthController {
+    async register(req, res) {
         const { name, email, password } = req.body;
         let user = null;
         if (name && email && password) {
@@ -16,7 +16,7 @@ class Auth {
         }
         return res.status(200).json({
             success: true,
-            data: {
+            user: {
                 username: user.name,
                 email: user.email
             }
@@ -32,8 +32,20 @@ class Auth {
         if (!user) throw new Error("incorrect credentials.")
         const isPasswordValid = await user.isPasswordValid(password);
         if (!isPasswordValid) throw new Error("incorrect credentials.")
+        const token = user.generateToken();
+        const { email: userEmail, _id, date } = user;
+        const resObj = {
+            token,
+            user: {
+                id: _id,
+                email: userEmail,
+                date
+            }
+        }
+
+        res.status(200).json({ success: true, ...resObj });
     }
 }
 
 
-module.exports = new Auth();
+module.exports = new AuthController();
