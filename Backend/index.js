@@ -24,6 +24,7 @@ app.get('/', (req,res) => {
 // Image Storage Engine
 let storage;
 try{
+
      storage = multer.diskStorage({
         destination: './upload/images',
         filename:(req,file,callback)=> {
@@ -33,6 +34,10 @@ try{
 }catch(err){
 console.log(err)
 }
+    
+
+
+
 
 const upload = multer({storage:storage})
 
