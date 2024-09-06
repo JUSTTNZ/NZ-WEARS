@@ -7,7 +7,7 @@ const Popular = () => {
     const [popular_in_women,setPopular_in_women] = useState([]);
 
     useEffect(()=>{
-      fetch('http://localhost:4000/popularinwomen')
+      fetch('https://nz-wears-su6a.vercel.app/popularinwomen')
       .then((response)=>response.json())
       .then((data)=>setPopular_in_women(data));
     },[])
