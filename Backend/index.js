@@ -30,7 +30,10 @@ try{
           cb(null, 'upload/images'); // Ensure the path is correct
         },
         filename: (req, file, cb) => {
+            console.log('filename function called');
           const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+          console.log('uniqueSuffix:', uniqueSuffix);
+  console.log('file.originalname:', file.originalname);
           cb(null, uniqueSuffix + path.extname(file.originalname)); // Save with unique name
         }
       })

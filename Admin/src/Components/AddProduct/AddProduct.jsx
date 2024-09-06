@@ -58,8 +58,10 @@ const AddProduct = () => {
            body:JSON.stringify(product),
        }).then((resp)=>resp.json()).then((data)=>{
           data.success?alert("Product Added"):alert("Failed")
+          console.log('added', product)
        })
     } 
+    console.log('added', product)
   
   }
   return (
