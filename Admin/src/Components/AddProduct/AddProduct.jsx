@@ -3,10 +3,10 @@ import './AddProduct.css'
 import upload_area from '../../Admin_Assets/upload_area.svg'
 const AddProduct = () => {
 
-  const [image,setImage] = useState(false);
+  const [image,setImage] = useState(null);
   const [productDetails,setProductDetails] = useState({
     name: "",
-    image: "",
+    image: '',
     category: "select",
     new_price: "",
     old_price: ""
@@ -22,12 +22,17 @@ const AddProduct = () => {
   }
 
   const Add_Product = async () => {
+    if (!image) {
+      alert("Please select an image");
+      return;
+    }
     // console.log(productDetails);
     let responseData;
     let product = {...productDetails};
 
     let formData =  new FormData();
-    formData.append('product', image);
+    formData.append('product', image)
+    
 
     await fetch('https://nz-wears-su6a.vercel.app/upload', {
       method: 'POST',
@@ -41,7 +46,8 @@ const AddProduct = () => {
 
     if(responseData.success)
     {
-       product.image = responseData.image_url;
+      const imageUrl = `${responseData.image_url}`;
+       product.image = imageUrl;
        console.log(product);
        await fetch('https://nz-wears-su6a.vercel.app/addproduct',{
            method:'POST',
