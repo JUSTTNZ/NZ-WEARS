@@ -26,44 +26,45 @@ const AddProduct = () => {
       alert("Please select an image");
       return;
     }
-    // console.log(productDetails);
     let responseData;
     let product = {...productDetails};
-
-    let formData =  new FormData();
-    formData.append('product', image)
-    
-
-    await fetch('https://nz-wears-su6a.vercel.app/upload', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-      },
-      body:formData,
-    }).then((resp) => resp.json()).then((data)=>{
-      responseData=data
-    });
-
-    if(responseData.success)
-    {
-      const imageUrl = `${responseData.image_url}`;
-       product.image = imageUrl;
-       console.log(product);
-       await fetch('https://nz-wears-su6a.vercel.app/addproduct',{
-           method:'POST',
-           headers:{
-              Accept:'application/json',
-              'Content-Type':'application/json',
-           },
-           body:JSON.stringify(product),
-       }).then((resp)=>resp.json()).then((data)=>{
-          data.success?alert("Product Added"):alert("Failed")
-          console.log('added', product)
-       })
-    } 
-    console.log('added', product)
   
-  }
+    const formData = new FormData();
+    formData.append('image', image);
+  
+    try {
+      await fetch('https://nz-wears-su6a.vercel.app/upload', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary',
+        },
+        body: formData,
+      }).then((resp) => resp.json()).then((data) => {
+        responseData = data;
+      });
+  
+      if (responseData.success) {
+        const imageUrl = `${responseData.image_url}`;
+        product.image = imageUrl;
+        console.log(product);
+        await fetch('https://nz-wears-su6a.vercel.app/addproduct', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(product),
+        }).then((resp) => resp.json()).then((data) => {
+          data.success ? alert("Product Added") : alert("Failed");
+          console.log('added', product);
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add product");
+    }
+  };
   return (
     <div className='add-product'>
       <div className="addproduct-itemfield">
