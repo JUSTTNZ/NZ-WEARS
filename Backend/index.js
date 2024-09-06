@@ -25,12 +25,24 @@ app.get('/', (req,res) => {
 let storage;
 try{
 
-     storage = multer.diskStorage({
-        destination: './upload/images',
-        filename:(req,file,callback)=> {
-            return callback(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, 'upload/images'); // Ensure the path is correct
+        },
+        filename: (req, file, cb) => {
+            console.log('filename function called');
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+          console.log('uniqueSuffix:', uniqueSuffix);
+  console.log('file.originalname:', file.originalname);
+          cb(null, uniqueSuffix + path.extname(file.originalname)); // Save with unique name
         }
-    })
+      })
+    //  storage = multer.diskStorage({
+    //     destination: './upload/images',
+    //     filename:(req,file,callback)=> {
+    //         return callback(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`)
+    //     }
+    // })
 }catch(err){
 console.log(err)
 }
@@ -45,6 +57,11 @@ const upload = multer({storage:storage})
 app.use('/images', express.static('upload/images'))
 
 app.post('/upload', upload.single('product'), (req,res)=> {
+    console.log(req.file); // Check the file object
+    
+    if (!req.file) {
+        return res.status(400).json({ success: 0, message: 'No file uploaded' });
+    }
     res.json({
         success:1,
         image_url:`https://nz-wears-su6a.vercel.app/images/${req.file.filename}`
