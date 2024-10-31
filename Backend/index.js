@@ -1,4 +1,7 @@
-const port = 4000;
+require("dotenv").config();
+const PORT = process.env.PORT || 4000;
+//this package helps catch async errors thrown in request handlers.
+require("express-async-errors");
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -228,3 +231,4 @@ app.listen(port, (error)=>{
         console.log('Error : '+error)
     }
 })
+
